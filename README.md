@@ -179,25 +179,6 @@ iwr -useb https://raw.githubusercontent.com/Lcamargodasilva/windows-setup/main/s
 
 ---
 
-## 🗂️ Estrutura do projeto
-
-```
-windows-setup/
-├─ setup.ps1              # Bootstrap / menu principal
-├─ README.md
-├─ CHANGELOG.md
-├─ lib/
-│  └─ winget.ps1          # Funções compartilhadas (install, menu, upgrade)
-└─ profiles/
-   ├─ basic.ps1           # Usuário básico (submenu item a item)
-   ├─ itsupport.ps1       # Suporte de TI
-   ├─ devfront.ps1        # Dev Frontend
-   ├─ devback.ps1         # Dev Backend
-   └─ devops.ps1          # DevOps / Infra
-```
-
----
-
 ## 🔐 Segurança
 
 * Repositório público e auditável
