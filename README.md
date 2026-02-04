@@ -230,25 +230,6 @@ Uso livre para fins pessoais ou profissionais.
 
 ---
 
-## 📁 Estrutura de pastas (resumo rápido)
-
-```txt
-windows-setup/
-├─ setup.ps1
-├─ README.md
-├─ CHANGELOG.md
-├─ lib/
-│  └─ winget.ps1
-└─ profiles/
-   ├─ basic.ps1
-   ├─ itsupport.ps1
-   ├─ devfront.ps1
-   ├─ devback.ps1
-   └─ devops.ps1
-```
-
----
-
 ## ✨ Autor
 
 Criado por **Lucas Camargo**
