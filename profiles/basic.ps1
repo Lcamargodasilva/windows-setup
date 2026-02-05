@@ -19,4 +19,4 @@ $options["A"]=@{label="Instalar TODOS";action={Install-WingetMany $PACKS.Values}
 $options["U"]=@{label="Atualizar tudo";action={Ask-UpgradeAll -Auto:$AutoUpgrade};exitAfter=$false}
 $options["0"]=@{label="Voltar";action={};exitAfter=$true}
 
-Show-Menu "Perfil: Básicos" $options
+Show-Menu "Perfil: Basicos" $options

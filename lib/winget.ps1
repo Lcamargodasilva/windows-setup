@@ -3,7 +3,7 @@ $ErrorActionPreference = "Stop"
 
 function Assert-Winget {
   if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
-    throw "Winget não encontrado. Instale o App Installer."
+    throw "Winget nao encontrado. Instale o App Installer."
   }
 }
 
@@ -44,7 +44,7 @@ function Show-Menu($Title, $Options) {
 
     $choice = Read-Host "Escolha"
     if (-not $Options.ContainsKey($choice)) {
-      Write-Host "Inválido." -ForegroundColor Red
+      Write-Host "Invalido." -ForegroundColor Red
       continue
     }
 
