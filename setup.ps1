@@ -1,40 +1,28 @@
-# ===============================
-# CONFIGURAÇÃO INICIAL (SEGURA)
-# ===============================
 Set-StrictMode -Off
 $ErrorActionPreference = "Stop"
 
+# Força UTF-8 no console (corrige ????)
+try { chcp 65001 | Out-Null } catch {}
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
+# Flag manual (param não é confiável em iwr|iex)
 $AutoUpgrade = $false
+if ($args -contains "-AutoUpgrade") { $AutoUpgrade = $true }
 
-if ($args -contains "-AutoUpgrade") {
-  $AutoUpgrade = $true
-}
-
-# ===============================
-# CONFIGURAÇÃO DO REPOSITÓRIO
-# ===============================
 $RepoRawBase = "https://raw.githubusercontent.com/Lcamargodasilva/windows-setup/main"
 
-# Cache local
 $CacheRoot   = Join-Path $env:TEMP "windows-setup"
 $LibDir      = Join-Path $CacheRoot "lib"
 $ProfilesDir = Join-Path $CacheRoot "profiles"
 
-# ===============================
-# FUNÇÕES INTERNAS
-# ===============================
 function Ensure-Dirs {
   New-Item -ItemType Directory -Force -Path $CacheRoot   | Out-Null
   New-Item -ItemType Directory -Force -Path $LibDir      | Out-Null
   New-Item -ItemType Directory -Force -Path $ProfilesDir | Out-Null
 }
 
-function Download-File {
-  param($Url, $OutFile)
-
+function Download-File($Url, $OutFile) {
   Write-Host "⬇️  Baixando: $Url" -ForegroundColor DarkCyan
   Invoke-WebRequest -Uri $Url -OutFile $OutFile -UseBasicParsing
 }
@@ -59,26 +47,18 @@ function Sync-Scripts {
 
 function Run-Profile($ScriptName) {
   $path = Join-Path $ProfilesDir $ScriptName
-
   if (-not (Test-Path $path)) {
     Write-Host "❌ Script nao encontrado: $path" -ForegroundColor Red
     return
   }
-
   & $path -AutoUpgrade:$AutoUpgrade
 }
 
-# ===============================
-# EXECUÇÃO
-# ===============================
 Write-Host "`n🚀 Windows Setup (Winget)" -ForegroundColor Green
 Write-Host "Inicializando ambiente..." -ForegroundColor Green
 
 Sync-Scripts
 
-# ===============================
-# MENU PRINCIPAL
-# ===============================
 while ($true) {
   Write-Host "`n========================================" -ForegroundColor Green
   Write-Host " Windows Setup (Winget) — Menu Principal" -ForegroundColor Green
@@ -100,11 +80,13 @@ while ($true) {
     "5" { Run-Profile "devops.ps1" }
     "0" {
       Write-Host "`n👋 Saindo do Windows Setup. Ate mais!" -ForegroundColor Yellow
-      break
+
+      # Saída “à prova de iwr|iex”:
+      try { return } catch {}
+      try { break } catch {}
+      exit 0
     }
-    default {
-      Write-Host "❌ Opcao invalida." -ForegroundColor Red
-    }
+    default { Write-Host "❌ Opcao invalida." -ForegroundColor Red }
   }
 }
 
