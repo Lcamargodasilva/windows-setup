@@ -1,12 +1,18 @@
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$OutputEncoding = [System.Text.Encoding]::UTF8
-
 param(
   [switch]$AutoUpgrade
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
+
+# Encoding (depois do param, para não quebrar no iwr|iex)
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
+# Garantia extra (com StrictMode, evita edge cases)
+if (-not (Get-Variable AutoUpgrade -ErrorAction SilentlyContinue)) {
+  $AutoUpgrade = $false
+}
 
 # ===============================
 # CONFIGURAÇÃO DO REPOSITÓRIO
@@ -92,7 +98,7 @@ while ($true) {
   Write-Host "5) DevOps / Infra"
   Write-Host "0) Sair`n"
 
-  $choice = Read-Host "Escolha uma opção"
+  $choice = Read-Host "Escolha uma opcao"
 
   switch ($choice) {
     "1" { Run-Profile "basic.ps1" }
@@ -101,7 +107,7 @@ while ($true) {
     "4" { Run-Profile "devback.ps1" }
     "5" { Run-Profile "devops.ps1" }
     "0" {
-      Write-Host "`n👋 Saindo do Windows Setup. Ate mais!" -ForegroundColor Yellow
+      Write-Host "`n👋 Saindo do Windows Setup. Até mais!" -ForegroundColor Yellow
       return
     }
     default {
