@@ -209,12 +209,6 @@ winget upgrade --all --source winget
 
 ---
 
-## 📄 Licença
+## Autor
 
-Uso livre para fins pessoais ou profissionais.
-
----
-
-## ✨ Autor
-
-Criado por **Lucas Camargo**
+[<img src="https://github.com/Lcamargodasilva.png" width="100" alt="Lcamargodasilva">](https://www.github.com/Lcamargodasilva)
