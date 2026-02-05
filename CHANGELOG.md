@@ -56,6 +56,5 @@ Este projeto segue:
 - Execução não interativa (modo silencioso)
 - Perfil corporativo (proxy / restrições de rede)
 - Versionamento por tags e releases no GitHub
-````
 
 ---
