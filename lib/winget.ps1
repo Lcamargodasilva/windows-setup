@@ -1,20 +1,24 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
+# Fonte padrão (ignora msstore / evita erro 0x8a15003b no Sandbox)
+$global:WINGET_SOURCE = "winget"
+
 function Assert-Winget {
   if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
-    throw "Winget nao encontrado. Instale o App Installer."
+    throw "Winget não encontrado. Instale/atualize o App Installer."
   }
 }
 
 function Install-WingetPackage($Id) {
   Write-Host "`n==> Instalando: $Id" -ForegroundColor Cyan
   try {
-    winget install --id $Id -e --source winget --silent `
+    winget install --id $Id -e --source $global:WINGET_SOURCE --silent `
       --accept-package-agreements `
       --accept-source-agreements
   } catch {
-    winget install --id $Id -e --source winget `
+    Write-Host "Falhou silencioso: $Id. Tentando modo normal..." -ForegroundColor Yellow
+    winget install --id $Id -e --source $global:WINGET_SOURCE `
       --accept-package-agreements `
       --accept-source-agreements
   }
@@ -25,13 +29,19 @@ function Install-WingetMany($Ids) {
 }
 
 function Ask-UpgradeAll([switch]$Auto) {
+  $cmd = {
+    winget upgrade --all --source $global:WINGET_SOURCE `
+      --accept-package-agreements `
+      --accept-source-agreements
+  }
+
   if ($Auto) {
-    winget upgrade --all --source winget --accept-package-agreements --accept-source-agreements
+    & $cmd
     return
   }
 
   if ((Read-Host "Atualizar tudo (winget upgrade --all)? (Y/N)") -match '^[Yy]$') {
-    winget upgrade --all --source winget --accept-package-agreements --accept-source-agreements
+    & $cmd
   }
 }
 
@@ -39,6 +49,7 @@ function Show-Menu($Title, $Options) {
   while ($true) {
     Write-Host "`n==== $Title ====" -ForegroundColor Green
 
+    # Ordenação natural PS 5.1:
     $sortedKeys = $Options.Keys |
       Sort-Object -Property @{
         Expression = {
@@ -62,4 +73,3 @@ function Show-Menu($Title, $Options) {
     if ($Options[$choice].exitAfter) { break }
   }
 }
-
