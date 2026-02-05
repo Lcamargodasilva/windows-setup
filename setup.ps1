@@ -63,7 +63,7 @@ function Run-Profile {
 
   $path = Join-Path $ProfilesDir $ScriptName
   if (-not (Test-Path $path)) {
-    Write-Host "❌ Script não encontrado: $path" -ForegroundColor Red
+    Write-Host "❌ Script nao encontrado: $path" -ForegroundColor Red
     return
   }
 
@@ -85,7 +85,7 @@ while ($true) {
   Write-Host "`n========================================" -ForegroundColor Green
   Write-Host " Windows Setup (Winget) — Menu Principal" -ForegroundColor Green
   Write-Host "========================================" -ForegroundColor Green
-  Write-Host "1) Básicos (Usuário)"
+  Write-Host "1) Basicos (Usuario)"
   Write-Host "2) Suporte de TI"
   Write-Host "3) Dev Frontend"
   Write-Host "4) Dev Backend"
@@ -101,11 +101,11 @@ while ($true) {
     "4" { Run-Profile "devback.ps1" }
     "5" { Run-Profile "devops.ps1" }
     "0" {
-      Write-Host "`n👋 Saindo do Windows Setup. Até mais!" -ForegroundColor Yellow
+      Write-Host "`n👋 Saindo do Windows Setup. Ate mais!" -ForegroundColor Yellow
       return
     }
     default {
-      Write-Host "❌ Opção inválida." -ForegroundColor Red
+      Write-Host "❌ Opcao invalida." -ForegroundColor Red
     }
   }
 }
