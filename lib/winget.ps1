@@ -39,20 +39,13 @@ function Show-Menu($Title, $Options) {
   while ($true) {
     Write-Host "`n==== $Title ====" -ForegroundColor Green
 
-    $sortedKeys =
-      $Options.Keys |
-      Sort-Object -Stable -Property @{
+    $sortedKeys = $Options.Keys |
+      Sort-Object -Property @{
         Expression = {
-          if ($_ -eq "0") { 0 }           
-          elseif ($_ -match '^\d+$') { 1 } 
-          else { 2 }                       
+          if ($_ -eq "0") { "0|0000|$_" }
+          elseif ($_ -match '^\d+$') { "1|{0:D4}|$_" -f ([int]$_) }
+          else { "2|9999|$_" }
         }
-      }, @{
-        Expression = {
-          if ($_ -match '^\d+$') { [int]$_ } else { 9999 }
-        }
-      }, @{
-        Expression = { $_ }
       }
 
     foreach ($k in $sortedKeys) {
@@ -69,3 +62,4 @@ function Show-Menu($Title, $Options) {
     if ($Options[$choice].exitAfter) { break }
   }
 }
+
