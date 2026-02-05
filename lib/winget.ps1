@@ -10,11 +10,11 @@ function Assert-Winget {
 function Install-WingetPackage($Id) {
   Write-Host "`n==> Instalando: $Id" -ForegroundColor Cyan
   try {
-    winget install --id $Id -e --silent `
+    winget install --id $Id -e --source winget --silent `
       --accept-package-agreements `
       --accept-source-agreements
   } catch {
-    winget install --id $Id -e `
+    winget install --id $Id -e --source winget `
       --accept-package-agreements `
       --accept-source-agreements
   }
@@ -26,12 +26,12 @@ function Install-WingetMany($Ids) {
 
 function Ask-UpgradeAll([switch]$Auto) {
   if ($Auto) {
-    winget upgrade --all --accept-package-agreements --accept-source-agreements
+    winget upgrade --all --source winget --accept-package-agreements --accept-source-agreements
     return
   }
 
   if ((Read-Host "Atualizar tudo (winget upgrade --all)? (Y/N)") -match '^[Yy]$') {
-    winget upgrade --all --accept-package-agreements --accept-source-agreements
+    winget upgrade --all --source winget --accept-package-agreements --accept-source-agreements
   }
 }
 
