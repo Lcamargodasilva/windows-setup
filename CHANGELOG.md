@@ -8,6 +8,17 @@ Este projeto segue:
 
 ---
 
+## [1.0.1] - 2026-02-06
+### 🐛 Corrigido
+- Correção de loop infinito ao sair do menu principal
+- Ajuste de compatibilidade com execução via `iwr | iex`
+- Correção de erro de `ExecutionPolicy` ao executar scripts baixados
+- Forçado uso da fonte `winget` para evitar falhas da fonte `msstore`
+- Correção do bug de *closure* nos menus (cada opção instala o pacote correto)
+- Ordenação correta dos itens numéricos nos menus (1, 2, 10, 11…)
+
+---
+
 ## [1.0.0] - 2026-02-04
 ### ✨ Adicionado
 - Script principal `setup.ps1` com função de **bootstrap**
@@ -24,11 +35,7 @@ Este projeto segue:
   - Instalação individual de softwares
   - Opção para instalar todos
   - Opção para atualizar todos os pacotes
-- Biblioteca compartilhada `lib/winget.ps1` para:
-  - Verificação do Winget
-  - Instalação de pacotes
-  - Atualização global
-  - Renderização de menus
+- Biblioteca compartilhada `lib/winget.ps1`
 - Uso exclusivo do **Winget** (nativo do Windows)
 
 ### 🧠 Decisões técnicas
@@ -46,6 +53,9 @@ Este projeto segue:
 - Instalação opcional de WSL + Ubuntu
 - Configuração automática do Git (user.name / user.email)
 - Instalação de extensões do VS Code
-- Execução totalmente não-interativa (modo silencioso)
+- Execução não interativa (modo silencioso)
 - Perfil corporativo (proxy / restrições de rede)
-- Suporte a versionamento por tag no GitHub
+- Versionamento por tags e releases no GitHub
+````
+
+---

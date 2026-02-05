@@ -25,12 +25,16 @@ Após formatar o computador, o usuário só precisa:
 ## ✅ Requisitos
 
 - Windows 10 ou Windows 11
-- Winget instalado (App Installer – Microsoft Store)
+- Winget instalado (App Installer)
 
 Verificar:
 ```powershell
 winget --version
 ````
+
+> 💡 **Observação:**
+> Em ambientes como **Windows Sandbox**, a Microsoft Store pode estar indisponível.
+> Este projeto força o uso da fonte `winget`, evitando erros da fonte `msstore`.
 
 ---
 
@@ -91,12 +95,12 @@ Softwares comuns para qualquer usuário, com opção de instalar **um por um** o
 Menu exemplo:
 
 ```
-1) Instalar Google Chrome
-2) Instalar Mozilla Firefox
+0) Voltar
+1) Instalar Google.Chrome
+2) Instalar Mozilla.Firefox
 ...
 A) Instalar TODOS
 U) Atualizar tudo
-0) Voltar
 ```
 
 ---
@@ -168,13 +172,13 @@ Ferramentas para DevOps e infraestrutura:
 Em todos os submenus existe a opção:
 
 ```
-U) Atualizar tudo (winget upgrade --all)
+U) Atualizar tudo
 ```
 
-Também é possível iniciar o setup já com atualização automática:
+Ela executa internamente:
 
-```powershell
-iwr -useb https://raw.githubusercontent.com/Lcamargodasilva/windows-setup/main/setup.ps1 | iex; setup -AutoUpgrade
+```
+winget upgrade --all --source winget
 ```
 
 ---
@@ -183,11 +187,11 @@ iwr -useb https://raw.githubusercontent.com/Lcamargodasilva/windows-setup/main/s
 
 * Repositório público e auditável
 * Nenhuma ação destrutiva
-* Apenas:
+* Apenas comandos Winget:
 
   * `winget install`
   * `winget upgrade`
-* Scripts baixados apenas do próprio GitHub do projeto
+* Scripts baixados **exclusivamente** do próprio repositório do projeto
 
 ---
 
