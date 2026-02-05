@@ -49,16 +49,24 @@ function Run-Profile($ScriptName) {
   $path = Join-Path $ProfilesDir $ScriptName
 
   if (-not (Test-Path $path)) {
-    Write-Host "❌ Script nao encontrado: $path" -ForegroundColor Red
+    Write-Host "❌ Script não encontrado: $path" -ForegroundColor Red
     return
   }
 
-  powershell.exe `
-    -NoProfile `
-    -ExecutionPolicy Bypass `
-    -File $path `
-    -AutoUpgrade:$AutoUpgrade
+  $psArgs = @(
+    "-NoProfile",
+    "-ExecutionPolicy", "Bypass",
+    "-File", $path
+  )
+
+  # Só adiciona o switch se for verdadeiro
+  if ($AutoUpgrade -eq $true -or $AutoUpgrade -eq 1 -or "$AutoUpgrade".ToLower() -eq "true") {
+    $psArgs += "-AutoUpgrade"
+  }
+
+  Start-Process -FilePath "powershell.exe" -ArgumentList $psArgs -Wait -NoNewWindow
 }
+
 
 Write-Host "`n🚀 Windows Setup (Winget)" -ForegroundColor Green
 Write-Host "Inicializando ambiente..." -ForegroundColor Green
