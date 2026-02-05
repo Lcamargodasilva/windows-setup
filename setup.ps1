@@ -1,17 +1,16 @@
-param(
-  [switch]$AutoUpgrade
-)
-
-Set-StrictMode -Version Latest
+# ===============================
+# CONFIGURAÇÃO INICIAL (SEGURA)
+# ===============================
+Set-StrictMode -Off
 $ErrorActionPreference = "Stop"
 
-# Encoding (depois do param, para não quebrar no iwr|iex)
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-# Garantia extra (com StrictMode, evita edge cases)
-if (-not (Get-Variable AutoUpgrade -ErrorAction SilentlyContinue)) {
-  $AutoUpgrade = $false
+$AutoUpgrade = $false
+
+if ($args -contains "-AutoUpgrade") {
+  $AutoUpgrade = $true
 }
 
 # ===============================
@@ -34,10 +33,7 @@ function Ensure-Dirs {
 }
 
 function Download-File {
-  param(
-    [Parameter(Mandatory=$true)][string]$Url,
-    [Parameter(Mandatory=$true)][string]$OutFile
-  )
+  param($Url, $OutFile)
 
   Write-Host "⬇️  Baixando: $Url" -ForegroundColor DarkCyan
   Invoke-WebRequest -Uri $Url -OutFile $OutFile -UseBasicParsing
@@ -57,17 +53,13 @@ function Sync-Scripts {
   )
 
   foreach ($f in $files) {
-    $url = "$RepoRawBase/$($f.rel)"
-    Download-File -Url $url -OutFile $f.out
+    Download-File "$RepoRawBase/$($f.rel)" $f.out
   }
 }
 
-function Run-Profile {
-  param(
-    [Parameter(Mandatory=$true)][string]$ScriptName
-  )
-
+function Run-Profile($ScriptName) {
   $path = Join-Path $ProfilesDir $ScriptName
+
   if (-not (Test-Path $path)) {
     Write-Host "❌ Script nao encontrado: $path" -ForegroundColor Red
     return
@@ -107,11 +99,13 @@ while ($true) {
     "4" { Run-Profile "devback.ps1" }
     "5" { Run-Profile "devops.ps1" }
     "0" {
-      Write-Host "`n👋 Saindo do Windows Setup. Até mais!" -ForegroundColor Yellow
-      return
+      Write-Host "`n👋 Saindo do Windows Setup. Ate mais!" -ForegroundColor Yellow
+      break
     }
     default {
       Write-Host "❌ Opcao invalida." -ForegroundColor Red
     }
   }
 }
+
+Write-Host "`n✅ Setup finalizado." -ForegroundColor Green
