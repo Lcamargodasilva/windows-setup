@@ -47,11 +47,17 @@ function Sync-Scripts {
 
 function Run-Profile($ScriptName) {
   $path = Join-Path $ProfilesDir $ScriptName
+
   if (-not (Test-Path $path)) {
     Write-Host "❌ Script nao encontrado: $path" -ForegroundColor Red
     return
   }
-  & $path -AutoUpgrade:$AutoUpgrade
+
+  powershell.exe `
+    -NoProfile `
+    -ExecutionPolicy Bypass `
+    -File $path `
+    -AutoUpgrade:$AutoUpgrade
 }
 
 Write-Host "`n🚀 Windows Setup (Winget)" -ForegroundColor Green
