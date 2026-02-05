@@ -38,13 +38,30 @@ function Ask-UpgradeAll([switch]$Auto) {
 function Show-Menu($Title, $Options) {
   while ($true) {
     Write-Host "`n==== $Title ====" -ForegroundColor Green
-    foreach ($k in ($Options.Keys | Sort-Object)) {
+
+    $sortedKeys =
+      $Options.Keys |
+      Sort-Object -Stable -Property @{
+        Expression = {
+          if ($_ -eq "0") { 0 }           
+          elseif ($_ -match '^\d+$') { 1 } 
+          else { 2 }                       
+        }
+      }, @{
+        Expression = {
+          if ($_ -match '^\d+$') { [int]$_ } else { 9999 }
+        }
+      }, @{
+        Expression = { $_ }
+      }
+
+    foreach ($k in $sortedKeys) {
       Write-Host "$k) $($Options[$k].label)"
     }
 
     $choice = Read-Host "Escolha"
     if (-not $Options.ContainsKey($choice)) {
-      Write-Host "Invalido." -ForegroundColor Red
+      Write-Host "Inválido." -ForegroundColor Red
       continue
     }
 

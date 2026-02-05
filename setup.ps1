@@ -59,7 +59,6 @@ function Run-Profile($ScriptName) {
     "-File", $path
   )
 
-  # Só adiciona o switch se for verdadeiro
   if ($AutoUpgrade -eq $true -or $AutoUpgrade -eq 1 -or "$AutoUpgrade".ToLower() -eq "true") {
     $psArgs += "-AutoUpgrade"
   }
