@@ -199,7 +199,7 @@ winget upgrade --all --source winget
 
 * Execute logo após formatar o Windows
 * Ajuste os pacotes conforme sua realidade
-* Versione mudanças no `CHANGELOG.md`
+* [Versonamento](https://github.com/Lcamargodasilva/windows-setup/blob/main/CHANGELOG.md)
 * Ideal para:
 
   * Uso pessoal
