@@ -19,13 +19,11 @@ $options = @{}
 
 foreach ($k in $PACKS.Keys) {
   $id = $PACKS[$k]
-  
-  $kCopy  = $k
-  $idCopy = $id
 
-  $options[$kCopy] = @{
-    label     = "Instalar $idCopy"
-    action    = { Install-WingetPackage $idCopy }
+  $options[$k] = @{
+    label     = "Instalar $id"
+    action    = { param($pkg) Install-WingetPackage $pkg }
+    args      = @($id)
     exitAfter = $false
   }
 }

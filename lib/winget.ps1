@@ -69,7 +69,11 @@ function Show-Menu($Title, $Options) {
       continue
     }
 
-    & $Options[$choice].action
-    if ($Options[$choice].exitAfter) { break }
-  }
+$opt = $Options[$choice]
+
+if ($opt.ContainsKey("args") -and $null -ne $opt.args) {
+  & $opt.action @($opt.args)
+} else {
+  & $opt.action
+}
 }
