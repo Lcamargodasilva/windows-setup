@@ -18,35 +18,4 @@ $PACKS = [ordered]@{
   "12" = "ShareX.ShareX"
 }
 
-$options = @{}
-
-foreach ($k in $PACKS.Keys) {
-  $id = $PACKS[$k]
-
-  $options[$k] = @{
-    label     = "Instalar $id"
-    action    = { param($pkg) Install-WingetPackage $pkg }
-    args      = @($id)
-    exitAfter = $false
-  }
-}
-
-$options["A"] = @{
-  label     = "Instalar TODOS"
-  action    = { Install-WingetMany $PACKS.Values }
-  exitAfter = $false
-}
-
-$options["U"] = @{
-  label     = "Atualizar tudo"
-  action    = { Ask-UpgradeAll -Auto:$AutoUpgrade }
-  exitAfter = $false
-}
-
-$options["0"] = @{
-  label     = "Voltar"
-  action    = { }
-  exitAfter = $true
-}
-
-Show-Menu "Perfil: Basicos" $options
+Show-WingetProfile -Title "Perfil: Basicos" -Packages $PACKS -AutoUpgrade:$AutoUpgrade

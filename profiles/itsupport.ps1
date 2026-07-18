@@ -15,35 +15,4 @@ $PACKS = [ordered]@{
   "9" = "Notepad++.Notepad++"
 }
 
-$options = @{}
-
-foreach ($k in $PACKS.Keys) {
-  $id = $PACKS[$k]
-
-  $options[$k] = @{
-    label     = "Instalar $id"
-    action    = { param($pkg) Install-WingetPackage $pkg }
-    args      = @($id)
-    exitAfter = $false
-  }
-}
-
-$options["A"] = @{
-  label     = "Instalar TODOS"
-  action    = { Install-WingetMany $PACKS.Values }
-  exitAfter = $false
-}
-
-$options["U"] = @{
-  label     = "Atualizar tudo"
-  action    = { Ask-UpgradeAll -Auto:$AutoUpgrade }
-  exitAfter = $false
-}
-
-$options["0"] = @{
-  label     = "Voltar"
-  action    = { }
-  exitAfter = $true
-}
-
-Show-Menu "Perfil: Suporte TI" $options
+Show-WingetProfile -Title "Perfil: Suporte TI" -Packages $PACKS -AutoUpgrade:$AutoUpgrade

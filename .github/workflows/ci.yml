@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  powershell-51:
+    name: Windows PowerShell 5.1
+    runs-on: windows-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6.0.2
+        with:
+          fetch-depth: 2
+
+      - name: Verify clean patch formatting
+        shell: powershell
+        run: |
+          git diff --check HEAD^ HEAD
+
+      - name: Parse every PowerShell file
+        shell: powershell
+        run: |
+          $PSVersionTable.PSVersion
+          if ($PSVersionTable.PSVersion.Major -ne 5) {
+            throw "This job must run with Windows PowerShell 5.1."
+          }
+          .\tests\parse.tests.ps1
+
+      - name: Run simulated Winget tests
+        shell: powershell
+        run: |
+          .\tests\winget.tests.ps1
+
+      - name: Confirm no real Winget operation is used by tests
+        shell: powershell
+        run: |
+          $testText = Get-Content -LiteralPath .\tests\winget.tests.ps1 -Raw
+          $forbidden = '(?im)^\s*&?\s*winget(?:\.exe)?\s+(install|upgrade|uninstall)|Start-Process\s+[^\r\n]*winget'
+          if ($testText -match $forbidden) {
+            throw "Tests must simulate Winget and must not install, upgrade, or uninstall software."
+          }

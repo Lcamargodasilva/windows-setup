@@ -1,7 +1,7 @@
 Set-StrictMode -Off
 $ErrorActionPreference = "Stop"
 
-# Força UTF-8 no console (corrige ????)
+# Configura UTF-8 no console.
 try { chcp 65001 | Out-Null } catch {}
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
@@ -23,7 +23,7 @@ function Ensure-Dirs {
 }
 
 function Download-File($Url, $OutFile) {
-  Write-Host "⬇️  Baixando: $Url" -ForegroundColor DarkCyan
+  Write-Host "Baixando: $Url" -ForegroundColor DarkCyan
   Invoke-WebRequest -Uri $Url -OutFile $OutFile -UseBasicParsing
 }
 
@@ -49,7 +49,7 @@ function Run-Profile($ScriptName) {
   $path = Join-Path $ProfilesDir $ScriptName
 
   if (-not (Test-Path $path)) {
-    Write-Host "❌ Script não encontrado: $path" -ForegroundColor Red
+    Write-Host "Script nao encontrado: $path" -ForegroundColor Red
     return
   }
 
@@ -63,18 +63,21 @@ function Run-Profile($ScriptName) {
     $psArgs += "-AutoUpgrade"
   }
 
-  Start-Process -FilePath "powershell.exe" -ArgumentList $psArgs -Wait -NoNewWindow
+  $process = Start-Process -FilePath "powershell.exe" -ArgumentList $psArgs -Wait -NoNewWindow -PassThru
+  if ($process.ExitCode -ne 0) {
+    Write-Host "O perfil terminou com codigo $($process.ExitCode) (0x$($process.ExitCode.ToString('X8')))." -ForegroundColor Yellow
+  }
 }
 
 
-Write-Host "`n🚀 Windows Setup (Winget)" -ForegroundColor Green
+Write-Host "`nWindows Setup (Winget)" -ForegroundColor Green
 Write-Host "Inicializando ambiente..." -ForegroundColor Green
 
 Sync-Scripts
 
 while ($true) {
   Write-Host "`n========================================" -ForegroundColor Green
-  Write-Host " Windows Setup (Winget) — Menu Principal" -ForegroundColor Green
+  Write-Host " Windows Setup (Winget) - Menu Principal" -ForegroundColor Green
   Write-Host "========================================" -ForegroundColor Green
   Write-Host "1) Basicos (Usuario)"
   Write-Host "2) Suporte de TI"
@@ -92,15 +95,15 @@ while ($true) {
     "4" { Run-Profile "devback.ps1" }
     "5" { Run-Profile "devops.ps1" }
     "0" {
-      Write-Host "`n👋 Saindo do Windows Setup. Ate mais!" -ForegroundColor Yellow
+      Write-Host "`nSaindo do Windows Setup. Ate mais!" -ForegroundColor Yellow
 
-      # Saída “à prova de iwr|iex”:
+      # Saida compativel com iwr | iex.
       try { return } catch {}
       try { break } catch {}
       exit 0
     }
-    default { Write-Host "❌ Opcao invalida." -ForegroundColor Red }
+    default { Write-Host "Opcao invalida." -ForegroundColor Red }
   }
 }
 
-Write-Host "`n✅ Setup finalizado." -ForegroundColor Green
+Write-Host "`nSetup finalizado." -ForegroundColor Green

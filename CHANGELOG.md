@@ -49,6 +49,17 @@ Este projeto segue:
 ---
 
 ## [Unreleased]
+### 🐛 Corrigido
+- Captura imediata e tratamento dos códigos de saída do Winget, incluindo fallback do modo silencioso.
+- Navegação de retorno dos submenus e leitura do código de saída dos processos de perfil.
+- Continuidade e resumo da instalação em lote após falhas individuais.
+
+### ✨ Adicionado
+- Diagnóstico não destrutivo da versão e das fontes do Winget.
+- Logs únicos por execução, pacote e tentativa em `%TEMP%\windows-setup\logs`.
+- Classificação de sucesso, ausência de atualização, cancelamento, reinicialização e falha definitiva.
+- Workflows para validar PowerShell 5.1, testes simulados e dependências em pull requests.
+
 ### 🔮 Planejado
 - Instalação opcional de WSL + Ubuntu
 - Configuração automática do Git (user.name / user.email)

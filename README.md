@@ -30,7 +30,12 @@ Após formatar o computador, o usuário só precisa:
 Verificar:
 ```powershell
 winget --version
-````
+```
+
+Ao iniciar um perfil, o projeto executa `winget --info` e `winget source list`
+apenas para diagnóstico. Nenhuma fonte é redefinida automaticamente. Os logs ficam
+em `%TEMP%\windows-setup\logs`, com um arquivo de diagnóstico por execução e arquivos
+separados por pacote/tentativa.
 
 > 💡 **Observação:**
 > Em ambientes como **Windows Sandbox**, a Microsoft Store pode estar indisponível.
